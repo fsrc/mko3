@@ -1,3 +1,4 @@
+stream = require("stream")
 _ = require("lodash")
 ast = require("./manipulators")
 
@@ -87,6 +88,22 @@ create = (moduleName) ->
 
     wrapper
 
+class ExpressionStream extends stream.Transform
+  constructor: (@tokenRules, @name) ->
+    @p = create(@name)
+      .onIsOpening((token) => @tokenRules.DEL.open(token.data))
+      .onIsClosing((token) => @tokenRules.DEL.close(token.data))
+      .onIsEof((token) => token.type == @tokenRules.EOF.id)
+
+    super({objectMode:true})
+
+  _transform: (token, enc, next) ->
+    if @tokenRules.isUseful(token.type)
+      @p.feed(token, (err, expr) =>
+        return next(err) if err?
+        @push(expr))
+    next()
 
 module.exports =
   create:create
+  Stream:ExpressionStream

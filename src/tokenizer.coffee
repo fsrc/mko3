@@ -1,4 +1,5 @@
-_     = require("lodash")
+stream = require("stream")
+_      = require("lodash")
 
 # Create the tokenizer, we need a state to manage this algorithm
 create = (TOK) ->
@@ -144,5 +145,76 @@ create = (TOK) ->
 
     wrapper
 
-module.exports =
-  create:create
+
+class TokenStream extends stream.Transform
+  constructor: (tokenRules) ->
+    @t = create(tokenRules)
+    super({objectMode:true})
+
+  _transform: (chunk, enc, next) ->
+    @t.tokenize(chunk.toString(), (err, token) =>
+      return next(err) if err?
+      @push(token))
+    next()
+
+
+
+
+if module.parent?
+  module.exports =
+    create:create
+    Stream:TokenStream
+
+else
+  # This code is only run when entry point is command line
+  fs = require('fs')
+  JsonStream = require("./json-stream")
+
+  tokenRules = (tokenrules) ->
+    if tokenrules == "built-in"
+      require("../defines/tokens")
+    else
+      require(tokenrules)
+
+  inStream = (infile) ->
+    if infile == "stdin"
+      process.stdin
+    else
+      fs.createReadStream(infile)
+
+  outStream = (outfile) ->
+    if outfile = "stdout"
+      process.stdout
+    else
+      fs.createWriteStream(outfile)
+
+  run = (instrm, outstrm, tokenrules, beautify) ->
+    ts = new TokenStream(tokenrules)
+    js = new JsonStream.Stringify(beautify)
+    instrm
+      .pipe(ts)
+      .pipe(js)
+      .pipe(outstrm)
+
+  # Set up command line arguments
+  argv = require('yargs')
+    .usage("Usage: $0 [options]")
+    .default('i', 'stdin')
+      .alias('i', 'in')
+      .describe('i', "Input file")
+    .default('o', 'stdout')
+      .alias('o', 'out')
+      .describe('o', "Output file")
+    .default('t', 'built-in')
+      .alias('t', 'token-rules')
+      .describe('t', "File with token rules")
+    .boolean('b')
+      .alias('b', 'beautify')
+      .describe('b', "Beautify JSON output")
+    .help('h')
+    .epilog("Copyright 2016")
+    .argv
+
+  # Execute
+  run(inStream(argv.i), outStream(argv.o), tokenRules(argv.t), argv.b)
+

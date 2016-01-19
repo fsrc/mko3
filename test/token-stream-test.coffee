@@ -1,7 +1,7 @@
-stream           = require('stream')
-TokenStream      = require("../src/token-stream")
-ExpressionStream = require("../src/expression-stream")
-JsonStream       = require("../src/json-stream")
+stream     = require('stream')
+tokenizer  = require("../src/tokenizer")
+parser     = require("../src/parser")
+JsonStream = require("../src/json-stream")
 
 TOK = require("../defines/tokens")
 
@@ -24,11 +24,12 @@ source = streamify("""
     (my-add 3 4))))
 """)
 
-ts = new TokenStream(TOK)
-es = new ExpressionStream('main', TOK)
+ts = new tokenizer.Stream(TOK)
+es = new parser.Stream(TOK, "main")
+js = new JsonStream.Stringify(true)
 
 source
   .pipe(ts)
   .pipe(es)
-  .pipe(new JsonStream.Stringify(true))
+  .pipe(js)
   .pipe(process.stdout)
