@@ -1,0 +1,13 @@
+(config
+  (namespace se.fsrc.example)
+
+  (licence BSD)
+
+  (versioning (version 0.1)
+              (build 0))
+
+  (repository github.com/fsrc/mko2)
+  (contributors (Fredrik Andersson))
+
+  (entry-module simple))
+

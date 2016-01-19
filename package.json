@@ -1,0 +1,22 @@
+{
+  "name": "mko3",
+  "version": "0.0.1",
+  "description": "Third version of my compiler",
+  "main": "index.js",
+  "scripts": {
+    "test": "",
+    "tokenize": "echo \"Error: no test specified\"",
+    "parse": "echo \"Error: no parser command specified\"",
+    "compile": "echo \"Error: no compile command specified\""
+  },
+  "author": "Fredrik Andersson",
+  "license": "BSD",
+  "dependencies": {
+    "async": "^1.5.2",
+    "chai": "^3.4.1",
+    "coffee-script": "^1.10.0",
+    "lodash": "^4.0.0",
+    "mocha": "^2.3.4",
+    "prettyjson": "^1.1.3"
+  }
+}
