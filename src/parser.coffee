@@ -104,6 +104,20 @@ class ExpressionStream extends stream.Transform
         @push(expr))
     next()
 
-module.exports =
-  create:create
-  Stream:ExpressionStream
+if module.parent?
+  module.exports =
+    create:create
+    Stream:ExpressionStream
+
+else
+  JsonStream = require("./json-stream")
+  options = require('./common-cli')
+
+  es = new ExpressionStream(options.tokenrules)
+  jsin = new JsonStream.Parse()
+  jsout = new JsonStream.Stringify(options.beautify)
+  options.instrm
+    .pipe(jsin)
+    .pipe(es)
+    .pipe(jsout)
+    .pipe(options.outstrm)

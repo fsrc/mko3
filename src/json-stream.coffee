@@ -15,7 +15,8 @@ class ParseStream extends stream.Transform
   constructor: () ->
     super({ objectMode: true })
   _transform: (obj, enc, next) ->
-    @push(JSON.stringify(obj) + "\n")
+    console.log("+++++++" + obj.toString() + "-------")
+    #@push(JSON.stringify(obj) + "\n")
     next()
 
 exports.Stringify = StringifyStream
