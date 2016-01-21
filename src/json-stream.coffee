@@ -1,4 +1,5 @@
-stream    = require("stream")
+_      = require("lodash")
+stream = require("stream")
 
 class StringifyStream extends stream.Transform
   constructor: (@prettyprint) ->
@@ -15,8 +16,11 @@ class ParseStream extends stream.Transform
   constructor: () ->
     super({ objectMode: true })
   _transform: (obj, enc, next) ->
-    console.log("+++++++" + obj.toString() + "-------")
-    #@push(JSON.stringify(obj) + "\n")
+    _.chain(obj.toString().split('\n'))
+      .dropRight()
+      .map((line) -> JSON.parse(line))
+      .map((obj) => @push(obj))
+      .value()
     next()
 
 exports.Stringify = StringifyStream

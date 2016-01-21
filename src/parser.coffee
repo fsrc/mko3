@@ -88,13 +88,13 @@ create = (moduleName) ->
 
     wrapper
 
+# Wrapped in a stream
 class ExpressionStream extends stream.Transform
   constructor: (@tokenRules, @name) ->
     @p = create(@name)
       .onIsOpening((token) => @tokenRules.DEL.open(token.data))
       .onIsClosing((token) => @tokenRules.DEL.close(token.data))
       .onIsEof((token) => token.type == @tokenRules.EOF.id)
-
     super({objectMode:true})
 
   _transform: (token, enc, next) ->
@@ -104,11 +104,13 @@ class ExpressionStream extends stream.Transform
         @push(expr))
     next()
 
+# Included as a module in other projects
 if module.parent?
   module.exports =
     create:create
     Stream:ExpressionStream
 
+# Run from the command line
 else
   JsonStream = require("./json-stream")
   options = require('./common-cli')

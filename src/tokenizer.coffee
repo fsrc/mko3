@@ -146,6 +146,7 @@ create = (TOK) ->
     wrapper
 
 
+# Wrapped in a stream
 class TokenStream extends stream.Transform
   constructor: (tokenRules) ->
     @t = create(tokenRules)
@@ -158,13 +159,13 @@ class TokenStream extends stream.Transform
     next()
 
 
-
-
+# Included as a module in other projects
 if module.parent?
   module.exports =
     create:create
     Stream:TokenStream
 
+# Run from the command line
 else
   JsonStream = require("./json-stream")
   options = require('./common-cli')
