@@ -1,20 +1,26 @@
+; Simple primitives
 (byte hello 4)               ; Define a variable of type byte
 (int hello 3)                ; Int
 (float hello 4.4)            ; Float
 (string hello "Hello world") ; String
-(regex hello /myregex/i)     ; Regex
 (bool hello true)            ; Boolean
 (char hello h)               ; Char
+
+; More complex primitives
+(regex hello /myregex/i)     ; Regex
 
 ; Define tuple before usage
 (tuple hello-tuple (int string))
 (hello-tuple 9 "Hello world")
 
+; TODO: Named tuples
+
 ; Define array type before use
 (array int-array int)
 (int-array hello-ints (3 54 6 4))
 
-
+; TODO: Associative arrays
+; 
 
 ; Define a function type that returns a byte based on two bytes input
 (function tripple-byte-function (byte byte byte))
