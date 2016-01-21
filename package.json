@@ -2,22 +2,43 @@
   "name": "mko3",
   "version": "0.0.1",
   "description": "Third version of my compiler",
+  "homepage": "https://github.com/fsrc/mko3",
   "main": "index.js",
+  "preferGlobal" : true,
+  "engines": {
+    "node" : "~5.4"
+  },
   "scripts": {
-    "test": "",
+    "test": "cat ./examples/simple.mko | coffee src/tokenizer.coffee | coffee src/parser.coffee",
     "tokenize": "echo \"Error: no test specified\"",
     "parse": "echo \"Error: no parser command specified\"",
-    "compile": "echo \"Error: no compile command specified\""
+    "prepublish": "coffee -o lib/ -c src/"
   },
-  "author": "Fredrik Andersson",
-  "license": "BSD",
+  "bin" : {
+    "mko-tokenize" : "./lib/tokenize.js",
+    "mko-parse" : "./lib/parse.js"
+  },
+  "author": {
+    "name" : "Fredrik Andersson",
+    "email" : "fredrik@kondensator.se"
+  },
+  "directories" : {
+    "lib" : "/lib",
+    "doc" : "/doc"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/fsrc/mko3.git"
+  },
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "coffee-script": "^1.10.0",
+    "mocha": "^2.3.4",
+    "chai": "^3.4.1"
+  },
   "dependencies": {
     "async": "^1.5.2",
-    "chai": "^3.4.1",
-    "coffee-script": "^1.10.0",
     "lodash": "^4.0.0",
-    "mocha": "^2.3.4",
-    "prettyjson": "^1.1.3",
     "yargs": "^3.32.0"
   }
 }

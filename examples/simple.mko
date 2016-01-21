@@ -1,10 +1,33 @@
-; Declare a function
-(function tripple-byte-fun (byte-type byte-type byte-type))
-(define tripple-byte-fun my-add ((a b)
+(byte hello 4)               ; Define a variable of type byte
+(int hello 3)                ; Int
+(float hello 4.4)            ; Float
+(string hello "Hello world") ; String
+(regex hello /myregex/i)     ; Regex
+(bool hello true)            ; Boolean
+(char hello h)               ; Char
+
+; Define tuple before usage
+(tuple hello-tuple (int string))
+(hello-tuple 9 "Hello world")
+
+; Define array type before use
+(array int-array int)
+(int-array hello-ints (3 54 6 4))
+
+
+
+; Define a function type that returns a byte based on two bytes input
+(function tripple-byte-function (byte byte byte))
+
+; Define a function of the previously defined type 'tripple-byte-function'
+(define tripple-byte-function my-add ((a b)
   (block entry
     (sub a b))))
 
-(function single-byte-fun (byte-type))
-(define single-byte-fun main (()
+; Define a function type that returns a byte with no input
+(function single-byte-function (byte))
+
+; Define a function of the previously defined type 'single-byte-function'
+(define single-byte-function main (()
   (block entry
     (my-add 3 4))))

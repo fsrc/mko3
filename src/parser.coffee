@@ -91,6 +91,7 @@ create = (moduleName) ->
 # Wrapped in a stream
 class ExpressionStream extends stream.Transform
   constructor: (@tokenRules, @name) ->
+    @name = "root" if not @name
     @p = create(@name)
       .onIsOpening((token) => @tokenRules.DEL.open(token.data))
       .onIsClosing((token) => @tokenRules.DEL.close(token.data))
