@@ -22,6 +22,9 @@
 ; TODO: Associative arrays
 ; 
 
+; Declare block
+(block hello (expr a b))
+
 ; Define a function type that returns a byte based on two bytes input
 (function tripple-byte-function (byte byte byte))
 
