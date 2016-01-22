@@ -8,8 +8,21 @@ create = () ->
   # Create a state
   do () ->
     wrapper = {}
+    handler = {}
+
+    handler.exprForm = (form) ->
+    handler.identForm = (form) ->
+
+    handler.form = (form) ->
+      if form.type == "EXPR"
+        handler.exprForm(form)
+      else if form.type == "IDENT"
+        handler.identForm(form)
+      else
+        throw "Unknown form type #{form.type}"
 
     wrapper.astify = (form, cb) ->
+      cb(null, handler.form(form))
 
     wrapper
 
