@@ -9,7 +9,7 @@
     "node" : "~5.4"
   },
   "scripts": {
-    "test": "cat ./examples/simple.mko | coffee src/tokenizer.coffee | coffee src/parser.coffee",
+    "test": "cat ./examples/simple.mko | coffee src/tokenizer.coffee | coffee src/forms.coffee",
     "tokenize": "echo \"Error: no test specified\"",
     "parse": "echo \"Error: no parser command specified\"",
     "prepublish": "coffee -o lib/ -c src/"

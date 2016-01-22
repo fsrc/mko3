@@ -1,3 +1,5 @@
+#!/usr/bin/env coffee
+
 stream = require("stream")
 _      = require("lodash")
 
@@ -6,12 +8,6 @@ create = (TOK) ->
   # Create a state
   do (TOK) ->
     wrapper = {}
-    #wrapper.onError = (fn) -> wrapper.error = fn ; wrapper
-    #wrapper.onToken = (fn) -> wrapper.token = fn ; wrapper
-    #wrapper.onEof   = (fn) -> wrapper.eof = fn ; wrapper
-    #wrapper.error = (a) -> a
-    #wrapper.token = (a) -> a
-    #wrapper.eof = (a) -> a
 
     classify = (c) -> _.find(TOK, (def, name) -> def.def(c))
     #
@@ -176,4 +172,3 @@ else
     .pipe(ts)
     .pipe(js)
     .pipe(options.outstrm)
-
