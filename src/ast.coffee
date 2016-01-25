@@ -37,7 +37,11 @@ create = () ->
       userland[typename] = (outer) ->
         varname = outer.args[1].value
         values = valuesExtractor(outer.args[2])
-        { inst : 'assign', type : typename, name: varname, value : values }
+
+        inst  : 'assign'
+        type  : typename
+        name  : varname
+        value : values
 
     simplePrimitive = (form) ->
       type = form.args[0].value
@@ -47,12 +51,10 @@ create = () ->
 
       defineUserlandVar(name, type, value)
 
-      {
-        inst : 'assign'
-        type : type
-        name : name
-        value : value
-      }
+      inst  : 'assign'
+      type  : type
+      name  : name
+      value : value
 
     primitives.byte = primitives.int = primitives.float = primitives.string =
       primitives.bool = primitives.char = primitives.regex = simplePrimitive
@@ -68,7 +70,7 @@ create = () ->
         { inst : 'define', type : type, name: typename, definition: definition }
 
     primitives.tuple = complexPrimitive('tuple', valuesOfForm, valuesOfForm)
-    primitives.array = complexPrimitive('array', ((x) -> x), valuesOfForm)
+    primitives.array = complexPrimitive('array', ((x) -> x.value), valuesOfForm)
     primitives.function = complexPrimitive('function', valuesOfForm, (x) -> x)
     primitives.block = (form) -> { inst : 'assign', type : 'block', value: 0 }
 
