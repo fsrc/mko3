@@ -70,12 +70,18 @@ create = () ->
         definition = definitionExtractor(form.args[2])
         defineUserlandType(typename, valueExtractor)
 
-        { inst : 'define', type : type, name: typename, definition: definition }
+        inst: 'define'
+        type: type
+        name: typename
+        definition: definition
 
     primitives.tuple = complexPrimitive('tuple', valuesOfForm, valuesOfForm)
     primitives.array = complexPrimitive('array', ((x) -> x.value), valuesOfForm)
     primitives.function = complexPrimitive('function', valuesOfForm, (x) -> x)
-    primitives.block = (form) -> { inst : 'assign', type : 'block', value: 0 }
+    primitives.block = (form) ->
+      inst: 'assign'
+      type: 'block'
+      value: 0
 
     wrapper = {}
     handler = {}
@@ -103,19 +109,6 @@ create = () ->
 
     wrapper
 
-
-# Wrapped in a stream
-class AstStream extends stream.Transform
-  constructor: () ->
-    @a = create()
-    super({objectMode:true})
-
-  _transform: (obj, enc, next) ->
-    #@push(obj)
-    @a.astify(obj, (err, node) =>
-      return next(err) if err?
-      @push(node))
-    next()
 
 
 # Included as a module in other projects
