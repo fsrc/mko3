@@ -11,7 +11,7 @@ parseBool = (string) ->
       return false
 
 
-# Create the tokenizer, we need a state to manage this algorithm
+# Create the parser, we need a state to manage this algorithm
 create = () ->
   # Create a state
   do () ->
@@ -34,6 +34,9 @@ create = () ->
         value : value
 
     defineUserlandType = (typename, valuesExtractor) ->
+      if _.has(userland, typename)
+        throw "Identifier '#{name}' is already defined"
+
       userland[typename] = (outer) ->
         varname = outer.args[1].value
         values = valuesExtractor(outer.args[2])
