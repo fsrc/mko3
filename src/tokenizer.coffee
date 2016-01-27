@@ -27,11 +27,13 @@ create = (TOK) ->
       length : token.length + (data?.length ? 0)
 
     endToken = (token) ->
-      type   : token.type
-      data   : TOK[token.type].post(token.data) # Post process token
-      line   : token.line
-      column : token.column
-      length : token.length
+      TOK[token.type].post(      # Post process the final token
+        type   : token.type
+        data   : token.data
+        line   : token.line
+        column : token.column
+        length : token.length
+      )
 
     # Tests if char is the end of the state token
     isEnding = (stateType, currType, char) ->

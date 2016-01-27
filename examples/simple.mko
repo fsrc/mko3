@@ -1,13 +1,17 @@
 ;Simple primitives
 (byte hello-byte 4)               ; Define a variable of type byte
-(int hello-int 3)                ; Int
-(float hello-float 4.4)            ; Float
+(int hello-int 3)                 ; Int
+(float hello-float 4.4)           ; Float
 (bool hello-bool true)            ; Boolean
-(char hello-char h)               ; Char
-
+;(char hello-char h)              ; Char
+(string hello-str "Hello world")  ; String
 
 ; More complex primitives
-(regex hello-regex /myregex/i)     ; Regex
+(string mystr hello-str)          ; Reference to other variable
+(regex hello-regex /myregex/i)    ; Regex
+
+
+
 
 ; Define tuple before usage
 (tuple hello-tuple (quote int string))
@@ -20,18 +24,18 @@
 (int-array hello-ints (quote 3 54 6 4))
 
 ; TODO: Associative arrays
-; 
+;
 
 ; Declare block
-;(block hello (expr a b))
+(block hello-block (int a 5))
 
 ; Define a function type that returns a byte based on two bytes input
-;(function tripple-byte-function (quote byte byte byte))
+(function tripple-byte-function (quote byte byte byte))
 
 ; Define a function of the previously defined type 'tripple-byte-function'
-;(tripple-byte-function my-add ((quote a b)
-  ;(block entry
-    ;(sub a b))))
+(tripple-byte-function my-add ((quote a b)
+  (block entry
+    (int a 2))))
 
 ; Define a function type that returns a byte with no input
 ;(function single-byte-function (quote byte))
@@ -42,5 +46,3 @@
     ;(my-add 3 4))))
 
 
-(string hello-str "Hello world") ; String
-(string mystr hello-str)

@@ -16,12 +16,25 @@ create = () ->
         primitives[u.callee(form)](evaluator, scope, form)
 
       else if u.calleeExists(form, scope)
-        scope[u.callee(form)](evaluator, scope, form)
+        scope[u.callee(form)].reg(evaluator, scope, form)
+
+      else if u.calleeIsExpression(form)
+        u.throw(form, "Can not use expression as callee")
 
       else
+        console.log "f===================="
+        console.dir form
         u.throw(form, "'#{u.callee(form)}' is not defined")
 
-    handler.IDENT = (handler, parentScope, form) -> ref:form.value
+    handler.REGEX = (handler, parentScope, form) ->
+      value:form.value
+
+    handler.BOOL = (handler, parentScope, form) ->
+      value:u.parseBool(form.value)
+
+    handler.IDENT = (handler, parentScope, form) ->
+      ref:form.value
+
     handler.INT = (handler, parentScope, form) -> value:parseInt(form.value)
     handler.NUM = (handler, parentScope, form) -> value:parseFloat(form.value)
     handler.STR = (handler, parentScope, form) -> value:form.value

@@ -10,6 +10,7 @@ options.instrm
   .pipe(as)
   .on('end', () ->
     console.log("SCOPE")
-    console.log(JSON.stringify(as.scope(), null, 2)))
+    #console.log(JSON.stringify(as.scope(), null, 2)))
+    console.dir(as.scope()))
   .pipe(jsout)
   .pipe(options.outstrm)

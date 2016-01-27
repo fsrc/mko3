@@ -20,8 +20,18 @@ defIDENT = (c) ->
   not defEOL(c) and
   not defEOF(c)
 
-postIdentity = (str) -> str
-postSTR = (str) -> str.replace(/^"(.+(?="$))"$/, '$1')
+postIdentity = (token) -> token
+postSTR = (token) ->
+  token.data = token.data.replace(/^"(.+(?="$))"$/, '$1')
+  token
+
+postIDENT = (token) ->
+  regexTest = /^\/.*\/[igm]{0,3}$/
+  if regexTest.test(token.data)
+    token.type = "REGEX"
+  else if token.data == "true" or token.data == "false"
+    token.type = "BOOL"
+  token
 
 
 ##################################################################
@@ -114,7 +124,11 @@ def =
     exto : null
     onec : false
     use  : true
-    post : postIdentity
+    post : postIDENT
+  REGEX :
+    use : true
+  BOOL :
+    use : true
 
 
 
