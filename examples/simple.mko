@@ -33,7 +33,7 @@
 (function tripple-byte-function (quote byte byte byte))
 
 ; Define a function of the previously defined type 'tripple-byte-function'
-(tripple-byte-function my-add ((quote a b)
+(tripple-byte-function my-add (quote (quote a b)
   (block entry
     (int a 2))))
 

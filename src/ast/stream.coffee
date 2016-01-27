@@ -3,9 +3,14 @@ create = require("./index")
 
 # Wrapped in a stream
 class AstStream extends stream.Transform
-  constructor: () ->
+  constructor: (@options) ->
     @a = create()
     super({objectMode:true})
+
+  _flush:(next) ->
+    if @options.includescope
+      @push(scope:@a.scope())
+    next()
 
   _transform: (obj, enc, next) ->
     @a.astify(obj, (err, node) =>

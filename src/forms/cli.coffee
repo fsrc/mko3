@@ -4,7 +4,9 @@ options = require('../common-cli')
 
 es = new FormsStream(options.tokenrules)
 jsin = new JsonStream.Parse()
-jsout = new JsonStream.Stringify(options.beautify)
+jsout = new JsonStream.Stringify(
+  prettyprint:options.beautify
+  validify:options.validify)
 options.instrm
   .pipe(jsin)
   .pipe(es)

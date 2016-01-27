@@ -11,7 +11,7 @@ create = () ->
     wrapper = {}
 
     handler.EXPR = (evaluator, scope, form) ->
-      console.dir form
+      #console.error form
       if u.calleeExists(form, primitives)
         primitives[u.callee(form)](evaluator, scope, form)
 

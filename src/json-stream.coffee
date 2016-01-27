@@ -2,14 +2,31 @@ _      = require("lodash")
 stream = require("stream")
 
 class StringifyStream extends stream.Transform
-  constructor: (@prettyprint) ->
+  constructor: (@options) ->
+    @first = true
+    @separator = "\n"
+    @separator = ",\n" if @options.validify
     super({ objectMode: true })
+
+  _flush:(next) ->
+    @push "]" if @options.validify
+    next()
+
   _transform: (obj, enc, next) ->
-    jasonstr = if @prettyprint
+    prefix = ""
+    if @options.validify
+      if @first
+        prefix = "["
+        @first = false
+      else
+        prefix = ","
+
+    jasonstr = if @options.prettyprint
       JSON.stringify(obj, null, 2)
     else
       JSON.stringify(obj)
-    @push(jasonstr + "\n")
+
+    @push(prefix + jasonstr + "\n")
     next()
 
 class ParseStream extends stream.Transform

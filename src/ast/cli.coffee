@@ -2,14 +2,11 @@ AstStream = require("./stream")
 JsonStream = require("../json-stream")
 options = require('../common-cli')
 
-as = new AstStream(options.tokenrules)
+as = new AstStream(options.ast)
 jsin = new JsonStream.Parse(options.beautify)
-jsout = new JsonStream.Stringify(options.beautify)
+jsout = new JsonStream.Stringify(options.json)
 options.instrm
   .pipe(jsin)
   .pipe(as)
-  .on('end', () ->
-    console.error("SCOPE")
-    console.error(as.scope()))
   .pipe(jsout)
   .pipe(options.outstrm)

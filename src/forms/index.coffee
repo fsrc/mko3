@@ -1,49 +1,5 @@
 _ = require("lodash")
-
-# Helper functions to manage changing an form object
-form =
-  createExprArg : (value, type, line, column) ->
-    type:type
-    line:line
-    column:column
-    value:value
-
-  # Create a new expression
-  createExpr : (line, column, origin, args) ->
-    type:"EXPR"
-    origin:origin
-    starts:
-      line:line
-      column:column
-    ends: null
-    args: args ? []
-
-  # Add a part within the expression
-  addExprArg : (expr, value, type, line, column) ->
-    type:expr.type
-    origin:expr.origin
-    starts: expr.starts
-    ends: null
-    args: expr.args.concat(
-      type:type, line:line, column:column, value:value)
-
-  addSubExpression : (expr, subexpression) ->
-    type:expr.type
-    origin:expr.origin
-    starts: expr.starts
-    ends: null
-    args: expr.args.concat(subexpression)
-
-
-  # Close the expression
-  endExpr : (expr, line, column) ->
-    type:expr.type
-    origin:expr.origin
-    starts: expr.starts
-    ends:
-      line:line
-      column:column
-    args: expr.args
+u = require("./utils")
 
 
 # Construct a closure around the parser
@@ -75,7 +31,7 @@ create = (moduleName) ->
           # If we don't have an expression that we are
           # working on, we create a new one.
           if not state.expr?
-            state.expr = form.createExpr(token.line, token.column, moduleName)
+            state.expr = u.createExpr(token.line, token.column, moduleName)
           else
             # Turns out we already have an expression so we
             # create a new subparser to take care of the
@@ -94,7 +50,7 @@ create = (moduleName) ->
                 state.feeder = null
               else
                 # We extend our current hiearky with the new expression
-                state.expr = form.addSubExpression(state.expr, subexpr)
+                state.expr = u.addSubExpression(state.expr, subexpr)
 
                 # Make sure we kill the subparser
                 state.feeder = null
@@ -110,7 +66,7 @@ create = (moduleName) ->
           # result back to our owner.
           else
             # Close it
-            state.expr = form.endExpr(state.expr, token.line, token.column)
+            state.expr = u.endExpr(state.expr, token.line, token.column)
 
             state.block.push(state.expr)
             # Bubble
@@ -127,7 +83,7 @@ create = (moduleName) ->
             cb(msg:"Error: Identifier outside of expression", token:token)
           else
             # Add items into the list
-            state.expr = form.addExprArg(state.expr, token.data, token.type, token.line, token.column)
+            state.expr = u.addExprArg(state.expr, token.data, token.type, token.line, token.column)
 
     wrapper
 module.exports = create

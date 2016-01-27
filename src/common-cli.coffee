@@ -31,9 +31,15 @@ argv = require('yargs')
   .default('t', 'built-in')
     .alias('t', 'token-rules')
     .describe('t', "File with token rules")
+  .boolean('s')
+    .alias('s', 'include-scope')
+    .describe('s', "Outputs any internal scope or state at the end")
   .boolean('b')
     .alias('b', 'beautify')
     .describe('b', "Beautify output (NOTE: Destroys JSON lines format)")
+  .boolean('v')
+    .alias('v', 'validify')
+    .describe('v', "Outputs valid JSON instead of JSON lines format")
   .help('h')
     .alias('h', 'help')
   .epilog("Copyright 2016")
@@ -43,6 +49,10 @@ module.exports =
   instrm : inStream(argv.i)
   outstrm : outStream(argv.o)
   tokenrules : tokenRules(argv.t)
-  beautify : argv.b
+  ast:
+    includescope:argv.s
+  json:
+    beautify : argv.b
+    validify : argv.v
 
 
