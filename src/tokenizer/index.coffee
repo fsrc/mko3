@@ -1,5 +1,3 @@
-#!/usr/bin/env coffee
-
 stream = require("stream")
 _      = require("lodash")
 
@@ -143,34 +141,4 @@ create = (TOK) ->
 
     wrapper
 
-
-# Wrapped in a stream
-class TokenStream extends stream.Transform
-  constructor: (tokenRules) ->
-    @t = create(tokenRules)
-    super({objectMode:true})
-
-  _transform: (chunk, enc, next) ->
-    @t.tokenize(chunk.toString(), (err, token) =>
-      return next(err) if err?
-      @push(token))
-    next()
-
-
-# Included as a module in other projects
-if module.parent?
-  module.exports =
-    create:create
-    Stream:TokenStream
-
-# Run from the command line
-else
-  JsonStream = require("./json-stream")
-  options = require('./common-cli')
-
-  ts = new TokenStream(options.tokenrules)
-  js = new JsonStream.Stringify(options.beautify)
-  options.instrm
-    .pipe(ts)
-    .pipe(js)
-    .pipe(options.outstrm)
+module.exports = create

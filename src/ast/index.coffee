@@ -19,11 +19,11 @@ create = () ->
         scope[u.callee(form)].reg(evaluator, scope, form)
 
       else if u.calleeIsExpression(form)
-        u.throw(form, "Can not use expression as callee")
+        u.throw(form, "Can not use an expression as callee")
 
       else
-        console.log "f===================="
-        console.dir form
+        console.error "f===================="
+        console.error form
         u.throw(form, "'#{u.callee(form)}' is not defined")
 
     handler.REGEX = (handler, parentScope, form) ->

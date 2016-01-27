@@ -9,8 +9,7 @@ options.instrm
   .pipe(jsin)
   .pipe(as)
   .on('end', () ->
-    console.log("SCOPE")
-    #console.log(JSON.stringify(as.scope(), null, 2)))
-    console.dir(as.scope()))
+    console.error("SCOPE")
+    console.error(as.scope()))
   .pipe(jsout)
   .pipe(options.outstrm)

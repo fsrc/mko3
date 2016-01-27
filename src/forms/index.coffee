@@ -1,6 +1,3 @@
-#!/usr/bin/env coffee
-
-stream = require("stream")
 _ = require("lodash")
 
 # Helper functions to manage changing an form object
@@ -133,41 +130,4 @@ create = (moduleName) ->
             state.expr = form.addExprArg(state.expr, token.data, token.type, token.line, token.column)
 
     wrapper
-
-# Wrapped in a stream
-class FormsStream extends stream.Transform
-  constructor: (@tokenRules, @name) ->
-    @name = "root" if not @name
-    @p = create(@name)
-      .onIsOpening((token) => @tokenRules.DEL.open(token.data))
-      .onIsClosing((token) => @tokenRules.DEL.close(token.data))
-      .onIsEof((token) => token.type == @tokenRules.EOF.id)
-    super({objectMode:true})
-
-  _transform: (token, enc, next) ->
-    if @tokenRules.isUseful(token.type)
-      @p.feed(token, (err, expr) =>
-        return next(err) if err?
-        @push(expr))
-    next()
-
-# Included as a module in other projects
-if module.parent?
-  module.exports =
-    create:create
-    Stream:ExpressionStream
-
-# Run from the command line
-else
-  JsonStream = require("./json-stream")
-  options = require('./common-cli')
-
-  es = new FormsStream(options.tokenrules)
-  jsin = new JsonStream.Parse()
-  jsout = new JsonStream.Stringify(options.beautify)
-  options.instrm
-    .pipe(jsin)
-    .pipe(es)
-    .pipe(jsout)
-    .pipe(options.outstrm)
-
+module.exports = create
