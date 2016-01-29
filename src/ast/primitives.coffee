@@ -71,10 +71,10 @@ primitives.quote = (handler, scope, form) ->
   value: _.tail(_.map(form.args, (a) -> handler(scope, a)))
 
 primitives.block = (handler, scope, form) ->
-  subscope = _.cloneDeep(scope)
+  subscope = {}
   block = _.map(u.values(form), (subform) -> handler(subscope, subform))
 
-  defineUserlandVar(scope, u.name(form), 'block', block)
+  defineUserlandVar(subscope, u.name(form), 'block', block)
 
   inst: 'assign'
   type: 'block'
